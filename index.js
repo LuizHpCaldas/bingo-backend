@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { sequelize } = require('./models');
 const userController = require('./controllers/userController');
+const propertyController = require('./controllers/propertyController'); // Importar o controlador de propriedades
 const authenticateJWT = require('./middlewares/auth');
 
 const app = express();
@@ -16,6 +17,12 @@ app.post('/register', userController.register);
 
 // Rota de login
 app.post('/login', userController.login);
+
+// Rota para criar propriedade
+app.post('/properties', authenticateJWT, propertyController.createProperty);
+
+// Rota para obter propriedades
+app.get('/properties', authenticateJWT, propertyController.getProperties);
 
 // Rota protegida
 app.get('/protected', authenticateJWT, (req, res) => {
