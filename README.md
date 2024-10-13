@@ -1,77 +1,121 @@
-
 # Bingo - Sistema de Gestão Agrícola e Agropecuária
 
 ## Descrição
-
-Bingo é um Sistema de Gestão Agrícola e Agropecuária que visa facilitar a administração e o monitoramento de propriedades rurais. Com uma interface intuitiva e recursos robustos, o Bingo permite que os usuários gerenciem suas operações de maneira eficaz, otimizando recursos e aumentando a produtividade.
+Bingo é um sistema de gestão voltado para o agronegócio, proporcionando uma plataforma robusta para a administração de propriedades rurais, cultivo e inventário. O objetivo é facilitar a gestão e otimizar os processos envolvidos na produção agrícola, oferecendo funcionalidades completas que atendem às necessidades do campo.
 
 ## Funcionalidades
+- Cadastro de usuários
+- Gerenciamento de propriedades
+- Registro de culturas
+- Controle de campos
+- Monitoramento de colheitas
+- Gerenciamento de inventário
+- Geração de relatórios
 
-- **Gerenciamento de Propriedades**: Adicione e gerencie várias propriedades agrícolas e agropecuárias.
-- **Controle de Produção**: Monitore a produção de culturas e crie relatórios detalhados.
-- **Gestão Financeira**: Acompanhe receitas e despesas relacionadas à sua propriedade.
-- **Autenticação de Usuários**: Sistema de autenticação seguro utilizando JSON Web Tokens (JWT).
-- **API RESTful**: Acesso a dados através de uma API RESTful, facilitando a integração com outros sistemas.
+## Diagrama de Classes
 
+```mermaid
+classDiagram
+    class User {
+        +number id
+        +string name
+        +string email
+        +string password
+        +create()
+        +findById()
+        +update()
+        +delete()
+    }
+
+    class Property {
+        +number id
+        +string name
+        +string location
+        +number size
+        +number ownerId
+        +create()
+        +findById()
+        +update()
+        +delete()
+        +listAll()
+    }
+
+    class Crop {
+        +number id
+        +string name
+        +string type
+        +number propertyId
+        +create()
+        +update()
+        +delete()
+        +getDetails()
+    }
+
+    class Field {
+        +number id
+        +string name
+        +number size
+        +number cropId
+        +create()
+        +update()
+        +delete()
+        +getDetails()
+    }
+
+    class Harvest {
+        +number id
+        +date date
+        +number quantity
+        +number cropId
+        +create()
+        +update()
+        +delete()
+        +getDetails()
+    }
+
+    class Inventory {
+        +number id
+        +string itemName
+        +number quantity
+        +number propertyId
+        +addItem()
+        +removeItem()
+        +listItems()
+    }
+
+    class Report {
+        +number id
+        +string title
+        +date date
+        +string content
+        +number propertyId
+        +create()
+        +update()
+        +delete()
+        +getDetails()
+    }
+
+    User "1" -- "n" Property : owns
+    Property "1" -- "n" Crop : contains
+    Crop "1" -- "n" Field : includes
+    Crop "1" -- "n" Harvest : has
+    Property "1" -- "n" Inventory : manages
+    Property "1" -- "n" Report : generates
+```
 ## Tecnologias Utilizadas
+- Node.js
+- Express
+- Sequelize
+- PostgreSQL
+- dotenv
+- Mermaid (para diagrama de classes)
 
-- **Backend**: Node.js com Express
-- **Banco de Dados**: PostgreSQL
-- **ORM**: Sequelize
-- **Autenticação**: JSON Web Tokens (JWT)
-
-## Configuração
-
-### Pré-requisitos
-
-- Node.js (>= 14.x)
-- PostgreSQL (>= 12.x)
-- NPM ou Yarn
-
-### Instalação
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/bingo.git
-   ```
-
-2. Navegue até o diretório do projeto:
-   ```bash
-   cd bingo-backend
-   ```
-
-3. Instale as dependências:
-   ```bash
-   npm install
-   ```
-
-4. Configure as variáveis de ambiente no arquivo `.env`:
-   ```plaintext
-   DATABASE_NAME=bingo
-   DATABASE_USER=postgres
-   DATABASE_PASSWORD=@Agenciaif2017
-   DATABASE_HOST=127.0.0.1
-   JWT_SECRET=sua_chave_secreta
-   ```
-
-5. Execute as migrações do banco de dados:
-   ```bash
-   npx sequelize db:migrate
-   ```
-
-6. Inicie o servidor:
-   ```bash
-   node index.js
-   ```
-
-## Contribuição
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir um problema ou enviar um pull request.
+## Como Executar o Projeto
+1. Clone o repositório
+2. Instale as dependências: `npm install`
+3. Configure as variáveis de ambiente no arquivo `.env`
+4. Execute as migrações: `npx sequelize-cli db:migrate`
+5. Inicie o servidor: `npm start`
 
 ## Licença
-
-Este projeto está licenciado sob a MIT License. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## Contato
-
-Para mais informações, entre em contato com [luizhpcaldas@gmail.com](mailto:luizhpcaldas@gmail.com).
+Este projeto está sob a Licença MIT.
