@@ -1,29 +1,21 @@
+// middlewares/auth.js
+
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
 
-const JWT_SECRET = 'sua_chave_secreta';
-
-const authenticate = async (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-
+const authenticateJWT = (req, res, next) => {
+  const token = req.headers['authorization'];
+  
   if (!token) {
-    return res.status(401).json({ message: 'Acesso negado. Token não fornecido.' });
+    return res.sendStatus(403); // Forbidden
   }
 
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    const user = await User.findByPk(decoded.id);
-
-    if (!user) {
-      return res.status(401).json({ message: 'Token inválido.' });
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.sendStatus(403); // Forbidden
     }
-
     req.user = user;
     next();
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ message: 'Token inválido.' });
-  }
+  });
 };
 
-module.exports = authenticate;
+module.exports = authenticateJWT;

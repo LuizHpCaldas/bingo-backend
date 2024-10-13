@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "postgres",
-    "password": "@Agenciaif2017",
+    "password": "",
     "database": "bingo",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
-    "password": "@Agenciaif2017",
+    "password": "",
     "database": "bingo_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "production": {
     "username": "postgres",
-    "password": "@Agenciaif2017",
+    "password": "",
     "database": "bingo_prod",
     "host": "127.0.0.1",
     "dialect": "postgres"
