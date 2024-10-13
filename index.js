@@ -5,8 +5,7 @@ const bodyParser = require('body-parser');
 const { sequelize } = require('./models');
 const userController = require('./controllers/userController');
 const propertyController = require('./controllers/propertyController');
-const cropController = require('./controllers/cropController');
-const reportController = require('./controllers/reportController'); // Importar controlador de relatórios
+const weatherController = require('./controllers/weatherController'); // Importar o controlador de clima
 const authenticateJWT = require('./middlewares/auth');
 
 const app = express();
@@ -14,22 +13,20 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
-// Rotas de usuários
+// Rota de registro
 app.post('/register', userController.register);
+
+// Rota de login
 app.post('/login', userController.login);
 
-// Rotas de propriedades
+// Rota para criar propriedade
 app.post('/properties', authenticateJWT, propertyController.createProperty);
+
+// Rota para obter propriedades
 app.get('/properties', authenticateJWT, propertyController.getProperties);
 
-// Rotas de culturas
-app.post('/crops', authenticateJWT, cropController.createCrop);
-app.get('/crops', authenticateJWT, cropController.getCrops);
-app.put('/crops/:id', authenticateJWT, cropController.updateCrop);
-app.delete('/crops/:id', authenticateJWT, cropController.deleteCrop);
-
-// Rota para relatório de culturas
-app.get('/crops/report', authenticateJWT, reportController.getCropReport);
+// Rota para obter clima
+app.get('/weather', authenticateJWT, weatherController.getWeather); // Nova rota para clima
 
 // Rota protegida
 app.get('/protected', authenticateJWT, (req, res) => {
