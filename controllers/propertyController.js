@@ -1,29 +1,21 @@
-// controllers/propertyController.js
+const { Property } = require('../models'); // Assumindo que você tenha um modelo de Propriedade
 
-const { Property } = require('../models');
+exports.createProperty = async (req, res) => {
+  const { name, location } = req.body;
 
-const createProperty = async (req, res) => {
   try {
-    const { name, location, area } = req.body;
-    const property = await Property.create({
-      name,
-      location,
-      area,
-      ownerId: req.user.id, // Associar a propriedade ao usuário autenticado
-    });
-    res.status(201).json({ message: 'Propriedade criada com sucesso!', property });
+    const newProperty = await Property.create({ name, location, userId: req.user.id });
+    res.status(201).json({ message: 'Property created successfully', property: newProperty });
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao criar propriedade', error });
+    res.status(500).json({ message: 'Error creating property', error });
   }
 };
 
-const getProperties = async (req, res) => {
+exports.getProperties = async (req, res) => {
   try {
-    const properties = await Property.findAll({ where: { ownerId: req.user.id } });
-    res.json(properties);
+    const properties = await Property.findAll({ where: { userId: req.user.id } });
+    res.status(200).json(properties);
   } catch (error) {
-    res.status(500).json({ message: 'Erro ao obter propriedades', error });
+    res.status(500).json({ message: 'Error fetching properties', error });
   }
 };
-
-module.exports = { createProperty, getProperties };

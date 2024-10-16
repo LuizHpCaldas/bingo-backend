@@ -1,23 +1,18 @@
-// models/property.js
-
 module.exports = (sequelize, DataTypes) => {
     const Property = sequelize.define('Property', {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      location: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      area: {
+      value: {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
-      ownerId: {
+      userId: {
         type: DataTypes.INTEGER,
+        allowNull: false,
         references: {
-          model: 'Users', // Relaciona com a tabela Users
+          model: 'Users',
           key: 'id',
         },
       },
