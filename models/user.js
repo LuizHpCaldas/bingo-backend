@@ -1,20 +1,20 @@
-module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('User', {
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-    });
-  
-    return User;
-  };
-  
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database'); // Ajuste o caminho conforme necessário
+
+const User = sequelize.define('User', {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+});
+
+module.exports = User;

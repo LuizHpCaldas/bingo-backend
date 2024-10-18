@@ -1,23 +1,26 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = new Sequelize('banco_de_dados', 'usuario', 'senha', {
-  host: 'localhost',
-  dialect: 'postgres',
+require('dotenv').config(); // Carregue as variáveis de ambiente
+
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: 'postgres', // Aqui você especifica que está usando o PostgreSQL
 });
 
-const User = sequelize.define('User', {
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-});
+// Verifica a conexão
+sequelize.authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
 
-module.exports = { User, sequelize };
+const db = {
+  Sequelize,
+  sequelize,
+  Users: require('./user')(sequelize, DataTypes),
+  Properties: require('./property')(sequelize, DataTypes),
+  // Adicione outros modelos aqui
+};
+
+module.exports = db;
